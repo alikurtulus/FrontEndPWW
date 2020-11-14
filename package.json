@@ -1,0 +1,19 @@
+{
+  "name": "frontendpww",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kopanarya/FrontEndPWW.git"
+  },
+  "author": "Ali Kurtulush",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kopanarya/FrontEndPWW/issues"
+  },
+  "homepage": "https://github.com/kopanarya/FrontEndPWW#readme"
+}
