@@ -48,14 +48,6 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Min</label>
-                    <input type="text" class="form-control" placeholder="Search ... "/>
-                </div>
-                <div class="form-group">
-                    <label>Max</label>
-                    <input type="text" class="form-control" placeholder="Search ... "/>
-                </div>
-                <div class="form-group">
                     <label  for="price">Category</label>
                     <select id="price" class="form-control">
                         <option value="Book ">Book </option>
@@ -70,22 +62,38 @@
                 <div class="form-group">
                     <button class="btn-search">Search</button>
                 </div>
-            </form>       
+            </form>
         </div>
-         <div class="products-list">
-            <h4>sdada</h4>
+        <div v-for="product in products" class="products-list" :key="product.id">
+            <div class="product-item">
+                <ProductItem
+                    v-bind:id="product.id"
+                    v-bind:title="product.name"
+                    v-bind:description="product.description"
+                    v-bind:price="product.price.value"
+                    v-bind:type="product.type"
+                    v-bind:department="product.department"
+                    v-bind:weight="product.weight"
+                />
+            </div>
         </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
+import ProductItem from './ProductItem'
+import ProductsServices from '../../../services/ProductsServices'
 export default {
   name: 'ProductList',
+  components: { ProductItem },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      products: null
     }
+  },
+  async mounted () {
+    this.products = (await ProductsServices.index()).data
   }
 }
 </script>
@@ -103,11 +111,8 @@ export default {
 .products-body{
   display:flex;
   margin-top: -50px;
-  background-color:#ededed;
   width: 90vw;
   height: 90vh;
-  box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.2);
-  
 }
 .products-search-bar-container{
     display: flex;
@@ -115,18 +120,33 @@ export default {
     flex:0.25;
     border:1px solid black;
     border-radius: 5px;
-    background-color: #f2f2f2;
+    background-color:#ededed;
     padding: 20px;
+    box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.2);
 }
 .products-list{
     display: flex;
+    flex-wrap: wrap;
     flex:0.75;
+    border:1px solid black;
+    background-color:#ededed;
+    padding: 20px;
+    box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.2);
+}
+.products-item{
+    display: flex;
+    width:33%;
 }
 ul.departmenst-list-container{
     list-style-type: none;
     font-size: 1.2rem;
     padding:0;
     line-height:1.6rem;
+    color:cornflowerblue;
+}
+.departmenst-list-container li:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }
 .form-group{
     display: flex;
