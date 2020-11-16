@@ -4,8 +4,8 @@
         <img src="https://images.dedocloud.com/images/genel/image-not-found.png" alt="img" />
     </div>
     <div class="product-item-body">
-        <h4 class="product-title">{{title}}</h4>
-        <p class="product-price">{{price}}</p>
+        <h4 class="product-title">{{product.name}}</h4>
+        <p class="product-price">£{{product.price.value}}</p>
     </div>
 </div>
 </template>
@@ -15,12 +15,7 @@ export default {
   name: 'ProductItem',
   props: {
     id: String,
-    title: String,
-    description: String,
-    price: Number,
-    type: String,
-    department: String,
-    weight: String
+    product: Object
   },
   data () {
     return {

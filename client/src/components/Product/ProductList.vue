@@ -4,7 +4,7 @@
          <div class="products-search-bar-container">
             <form>
                 <div class="form-group">
-                    <input type="text" value="" class="form-control" placeholder="Search ... "/>
+                    <input type="text" value="" name="searchName" class="form-control" placeholder="Search ... "/>
                 </div>
                 <div class="form-group">
                     <div class="departments-container">
@@ -42,14 +42,16 @@
                 </div>
                 <div class="form-group">
                     <label  for="price">Price</label>
-                    <select id="price" class="form-control">
+                    <select id="price" name="price" class="form-control">
+                        <option value="---">---</option>
                         <option value="ascending ">ascending </option>
                         <option value="descending ">descending </option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label  for="price">Category</label>
-                    <select id="price" class="form-control">
+                    <label  for="type">Type</label>
+                    <select id="type" name="type" class="form-control">
+                        <option value="all ">All </option>
                         <option value="Book ">Book </option>
                         <option value="Casual"> Casual</option>
                         <option value="Ceramics">Ceramics </option>
@@ -64,16 +66,21 @@
                 </div>
             </form>
         </div>
-        <div v-for="product in products" class="products-list" :key="product.id">
-            <div class="product-item">
+        <div class="products-list">
+            <div
+                v-for="product in products"
+                class="product-item"
+                :key="product.id"
+                @click="navigateTo({
+                    name:'product',
+                    params:{
+                        id:product.id
+                    }
+                })"
+            >
                 <ProductItem
                     v-bind:id="product.id"
-                    v-bind:title="product.name"
-                    v-bind:description="product.description"
-                    v-bind:price="product.price.value"
-                    v-bind:type="product.type"
-                    v-bind:department="product.department"
-                    v-bind:weight="product.weight"
+                    v-bind:product="product"
                 />
             </div>
         </div>
@@ -92,8 +99,13 @@ export default {
       products: null
     }
   },
+  methods:{ 
+    navigateTo (route) {
+      this.$router.push(route)
+    }
+  },
   async mounted () {
-    this.products = (await ProductsServices.index()).data
+    this.products = (await ProductsServices.index()).data.products
   }
 }
 </script>
@@ -103,16 +115,14 @@ export default {
   background-color:white;
   display:grid;
   place-items: center;
-  height: 100vh;
+  margin-top:30px;
 }
 .products-header{
     text-align:center;
 }
 .products-body{
   display:flex;
-  margin-top: -50px;
   width: 90vw;
-  height: 90vh;
 }
 .products-search-bar-container{
     display: flex;
@@ -123,6 +133,7 @@ export default {
     background-color:#ededed;
     padding: 20px;
     box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.2);
+    height: 90vh;
 }
 .products-list{
     display: flex;
@@ -131,11 +142,13 @@ export default {
     border:1px solid black;
     background-color:#ededed;
     padding: 20px;
+    height: 100%;
     box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.2);
 }
 .products-item{
     display: flex;
-    width:33%;
+    flex:0.25;
+    margin:auto;
 }
 ul.departmenst-list-container{
     list-style-type: none;
