@@ -2,67 +2,35 @@
   <div class="products-container">
     <div class="products-body">
          <div class="products-search-bar-container">
-            <form>
+            <form v-on:submit.prevent="onSubmit" >
                 <div class="form-group">
-                    <input type="text" value="" name="searchName" class="form-control" placeholder="Search ... "/>
+                    <input v-model.trim="searchKeyWord" type="text" value="" name="searchName" class="form-control" placeholder="Search ... "/>
                 </div>
                 <div class="form-group">
                     <div class="departments-container">
                         <h3>Departments</h3>
-                        <ul class="departmenst-list-container">
-                            <a class="department-link">
-                                <li>Books and Stationery</li>
-                            </a>
-                            <a class="department-link">
-                                <li>Computing</li>
-                            </a>
-                            <a class="department-link">
-                                <li>Cookwares</li>
-                            </a>
-                            <a class="department-link">
-                                <li>DIY</li>
-                            </a>
-                            <a class="department-link">
-                                <li>Entertainment</li>
-                            </a>
-                            <a class="department-link">
-                                <li>Gifts</li>
-                            </a>
-                            <a class="department-link">
-                                <li>Home</li>
-                            </a>
-                            <a class="department-link">
-                                <li>Photography and Art</li>
-                            </a>
-                            <a class="department-link">
-                                <li>Shoes</li>
-                            </a>
-                        </ul>
+                        <select v-model="department" class="departmenst-list-container">
+                            <option disabled value="all ">Please select one </option>
+                            <option v-for="currentDepartment in departments" :key="currentDepartment"  >{{currentDepartment}} </option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label  for="price">Price</label>
-                    <select id="price" name="price" class="form-control">
-                        <option value="---">---</option>
-                        <option value="ascending ">ascending </option>
+                    <select v-model="price" id="price" name="price" class="form-control">
                         <option value="descending ">descending </option>
+                        <option value="ascending ">ascending </option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label  for="type">Type</label>
-                    <select id="type" name="type" class="form-control">
-                        <option value="all ">All </option>
-                        <option value="Book ">Book </option>
-                        <option value="Casual"> Casual</option>
-                        <option value="Ceramics">Ceramics </option>
-                        <option value="Electrical"> Electrical</option>
-                        <option value="Electronics"> Electronics</option>
-                        <option value="Running"> Running</option>
-                        <option value="Voucher"> Voucher</option>
+                    <select v-model="type" id="type" name="type" class="form-control" >
+                        <option disabled value="all ">Please select one </option>
+                        <option v-for="currentType in types" :key="currentType" >{{currentType}} </option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <button class="btn-search">Search</button>
+                    <button v-on:click="handleSearch" class="btn-search">Search</button>
                 </div>
             </form>
         </div>
@@ -91,21 +59,52 @@
 <script>
 import ProductItem from './ProductItem'
 import ProductsServices from '../../../services/ProductsServices'
+import Api from '../../../services/Api'
+import axios from 'axios'
+
 export default {
   name: 'ProductList',
   components: { ProductItem },
   data () {
     return {
-      products: null
+      products: null,
+      departments: null,
+      types: null,
+      searchKeyWord: '',
+      department: '',
+      type: '',
+      price: ''
     }
   },
-  methods:{ 
+  methods: {
     navigateTo (route) {
       this.$router.push(route)
+    },
+    handleTypeChange (event) {
+      this.type = event.target.value
+    },
+    handleSearch (event) {
+      event.preventDefault()
+      axios.get('http://localhost:5000/api/search', {
+        params: {
+          type: this.type,
+          searchKeyWord: this.searchKeyWord,
+          department: this.department,
+          price: this.price
+        }
+      })
+        .then(response => {
+          this.products = response.data
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   },
   async mounted () {
     this.products = (await ProductsServices.index()).data.products
+    this.departments = (await ProductsServices.getDepartments()).data
+    this.types = (await ProductsServices.getAllTypes()).data
   }
 }
 </script>
