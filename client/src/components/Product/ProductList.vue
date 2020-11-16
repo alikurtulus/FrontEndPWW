@@ -10,7 +10,6 @@
                     <div class="departments-container">
                         <h3>Departments</h3>
                         <select v-model="department" class="departmenst-list-container">
-                            <option disabled value="all ">Please select one </option>
                             <option v-for="currentDepartment in departments" :key="currentDepartment"  >{{currentDepartment}} </option>
                         </select>
                     </div>
@@ -18,14 +17,14 @@
                 <div class="form-group">
                     <label  for="price">Price</label>
                     <select v-model="price" id="price" name="price" class="form-control">
-                        <option value="descending ">descending </option>
-                        <option value="ascending ">ascending </option>
+                        <option> ascending </option>
+                        <option > descending </option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label  for="type">Type</label>
                     <select v-model="type" id="type" name="type" class="form-control" >
-                        <option disabled value="all ">Please select one </option>
+                        <option disabled value="All">All </option>
                         <option v-for="currentType in types" :key="currentType" >{{currentType}} </option>
                     </select>
                 </div>
@@ -59,7 +58,6 @@
 <script>
 import ProductItem from './ProductItem'
 import ProductsServices from '../../../services/ProductsServices'
-import Api from '../../../services/Api'
 import axios from 'axios'
 
 export default {
