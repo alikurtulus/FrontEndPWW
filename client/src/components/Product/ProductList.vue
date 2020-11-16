@@ -4,12 +4,13 @@
          <div class="products-search-bar-container">
             <form v-on:submit.prevent="onSubmit" >
                 <div class="form-group">
-                    <input v-model.trim="searchKeyWord" type="text" value="" name="searchName" class="form-control" placeholder="Search ... "/>
+                    <input v-model.trim="searchKeyWord" type="text" value="" name="searchName" class="form-control" placeholder="Search product Name ... "/>
                 </div>
                 <div class="form-group">
                     <div class="departments-container">
                         <h3>Departments</h3>
                         <select v-model="department" class="departmenst-list-container">
+                            <option value="" > All </option>
                             <option v-for="currentDepartment in departments" :key="currentDepartment"  >{{currentDepartment}} </option>
                         </select>
                     </div>
@@ -17,6 +18,7 @@
                 <div class="form-group">
                     <label  for="price">Price</label>
                     <select v-model="price" id="price" name="price" class="form-control">
+                        <option value="">---</option>
                         <option> ascending </option>
                         <option > descending </option>
                     </select>
@@ -24,7 +26,7 @@
                 <div class="form-group">
                     <label  for="type">Type</label>
                     <select v-model="type" id="type" name="type" class="form-control" >
-                        <option disabled value="All">All </option>
+                        <option value="" >All </option>
                         <option v-for="currentType in types" :key="currentType" >{{currentType}} </option>
                     </select>
                 </div>
@@ -34,22 +36,24 @@
             </form>
         </div>
         <div class="products-list">
-            <div
-                v-for="product in products"
-                class="product-item"
-                :key="product.id"
+            <template
+                v-if="products.length > 0"
                 @click="navigateTo({
                     name:'product',
                     params:{
                         id:product.id
                     }
                 })"
-            >
-                <ProductItem
+            >   <div  v-for="product in products" class="product-item"  :key="product.id" >
+                    <ProductItem
                     v-bind:id="product.id"
                     v-bind:product="product"
                 />
-            </div>
+                </div>
+            </template>
+            <template v-else>
+                <NoProduct />
+            </template >
         </div>
     </div>
 </div>
@@ -59,10 +63,11 @@
 import ProductItem from './ProductItem'
 import ProductsServices from '../../../services/ProductsServices'
 import axios from 'axios'
+import NoProduct from './NoProduct'
 
 export default {
   name: 'ProductList',
-  components: { ProductItem },
+  components: { ProductItem, NoProduct },
   data () {
     return {
       products: null,
