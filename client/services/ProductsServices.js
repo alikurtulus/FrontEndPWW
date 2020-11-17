@@ -4,9 +4,6 @@ export default {
   index () {
     return Api().get('products')
   },
-  show () {
-    return Api().get('products/:id')
-  },
   getDepartments () {
     return Api().get('departments')
   },

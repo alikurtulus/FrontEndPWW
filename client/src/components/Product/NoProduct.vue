@@ -3,7 +3,6 @@
     <p class="product-notfound-content">Product not found</p>
 </div>
 </template>
-
 <script>
 export default {
   name: 'NoProduct',
@@ -26,6 +25,5 @@ export default {
     font-size: 1.3rem;
     padding:10px;
     background-color:#f8d7da;
-    
 }
 </style>

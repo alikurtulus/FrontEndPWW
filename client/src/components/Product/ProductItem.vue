@@ -9,24 +9,19 @@
     </div>
 </div>
 </template>
-
 <script>
 export default {
   name: 'ProductItem',
   props: {
     id: String,
     product: Object
-  },
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;1,300&display=swap');
 .product-item-container{
     display: flex;
     flex-direction: column;
@@ -36,20 +31,51 @@ export default {
     height: 40vh;
     margin:10px;
     cursor: pointer;
+    background-color:#ededed;
+    font-family: 'Barlow', sans-serif;
 }
 .product-img-container img{
     width:100%;
+    height: 25vh;
 }
 .product-item-body{
-    height: 10vh;
+    height: 20vh;
 }
 .product-title{
-    padding:3px 10px;
+    font-size: 1.2rem;
+    color:black;
+    text-align:center;
+    font-weight: 500;
+    line-height:1.3rem;
+}
+.product-price{
+    font-size: 1.2rem;
+    text-align:center;
+    font-weight:800;
 }
 .product-title:hover{
     text-decoration: underline;
 }
 .product-price{
     padding:5px 10px;
+    color:#0C509F;
+}
+@media only screen and (max-width:320px) {
+    .product-item-container{
+        width:18rem;
+        margin:5px auto;
+    }
+}
+@media only screen and ( max-width:375px) {
+    .product-item-container{
+        width:21rem;
+        margin:5px auto;
+    }
+}
+@media only screen and (max-width:425px) {
+    .product-item-container{
+        width:18rem;
+        margin:5px auto;
+    }
 }
 </style>

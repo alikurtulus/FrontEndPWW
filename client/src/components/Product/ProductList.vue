@@ -1,73 +1,80 @@
 <template>
-  <div class="products-container">
-    <div class="products-body">
-         <div class="products-search-bar-container">
-            <form v-on:submit.prevent="onSubmit" >
-                <div class="form-group">
-                    <input v-model.trim="searchKeyWord" type="text" value="" name="searchName" class="form-control" placeholder="Search product Name ... "/>
-                </div>
-                <div class="form-group">
-                    <div class="departments-container">
-                        <h3>Departments</h3>
-                        <select v-model="department" class="departmenst-list-container">
-                            <option value="" > All </option>
-                            <option v-for="currentDepartment in departments" :key="currentDepartment"  >{{currentDepartment}} </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label  for="price">Price</label>
-                    <select v-model="price" id="price" name="price" class="form-control">
-                        <option value="">---</option>
-                        <option> ascending </option>
-                        <option > descending </option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label  for="type">Type</label>
-                    <select v-model="type" id="type" name="type" class="form-control" >
-                        <option value="" >All </option>
-                        <option v-for="currentType in types" :key="currentType" >{{currentType}} </option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <button v-on:click="handleSearch" class="btn-search">Search</button>
-                </div>
-            </form>
-        </div>
-        <div class="products-list">
-            <template
-                v-if="products.length > 0"
-                @click="navigateTo({
-                    name:'product',
-                    params:{
-                        id:product.id
-                    }
-                })"
-            >   <div  v-for="product in products" class="product-item"  :key="product.id" >
-                    <ProductItem
-                    v-bind:id="product.id"
-                    v-bind:product="product"
-                />
-                </div>
-            </template>
-            <template v-else>
-                <NoProduct />
-            </template >
-        </div>
-    </div>
+<div>
+    <div class="products-container">
+      <div class="products-body">
+          <div class="products-search-bar-container">
+              <form >
+                  <h2>Filter by</h2>
+                  <hr />
+                  <div class="form-group">
+                      <div class="departments-container">
+                          <h3>Departments</h3>
+                          <select @change="handleSearch" v-model="department" class="departmenst-list-container">
+                              <option value="" > All </option>
+                              <option v-for="currentDepartment in departments" :key="currentDepartment" >{{currentDepartment}} </option>
+                          </select>
+                      </div>
+                  </div>
+                  <hr/>
+                  <div class="form-group">
+                      <label  for="price">Price</label>
+                      <select  @change="handleSearch" v-model="price" id="price" name="price" class="form-control">
+                          <option value="">- - -</option>
+                          <option> ascending </option>
+                          <option > descending </option>
+                      </select>
+                  </div>
+                  <hr/>
+                  <div class="form-group">
+                      <label  for="type">Type</label>
+                      <select @change="handleSearch" v-model="type" id="type" name="type" class="form-control" >
+                          <option value="" >All </option>
+                          <option v-for="currentType in types" :key="currentType" v:bind:value={}>{{currentType}} </option>
+                      </select>
+                  </div>
+              </form>
+          </div>
+          <div class="products-list">
+              <teplate v-if="products === null">
+                <Spinner />
+              </teplate>
+              <template v-else-if="products.length > 0" >
+                  <div
+                      v-for="product in products"
+                      @click="navigateTo({
+                      name:'product',
+                      params:{
+                          id:product.id
+                      }})"
+                      class="product-item"
+                      :key="product.id"
+                  >
+                      <ProductItem
+                      v-bind:id="product.id"
+                      v-bind:product="product"
+                      />
+                  </div>
+              </template>
+              <template v-else>
+                  <NoProduct />
+              </template >
+          </div>
+      </div>
+  </div>
 </div>
 </template>
-
 <script>
 import ProductItem from './ProductItem'
 import ProductsServices from '../../../services/ProductsServices'
 import axios from 'axios'
 import NoProduct from './NoProduct'
+import Spinner from '../UI/Spinner'
+import Navbar from '../UI/Navbar'
+import { EventBus } from '../../state/event-bus'
 
 export default {
   name: 'ProductList',
-  components: { ProductItem, NoProduct },
+  components: { ProductItem, NoProduct, Spinner, Navbar },
   data () {
     return {
       products: null,
@@ -79,6 +86,12 @@ export default {
       price: ''
     }
   },
+  created () {
+    EventBus.$on('searched-word', searchKeyWord => {
+      this.searchKeyWord = searchKeyWord
+      this.handleSearch(event)
+    })
+  },
   methods: {
     navigateTo (route) {
       this.$router.push(route)
@@ -87,8 +100,9 @@ export default {
       this.type = event.target.value
     },
     handleSearch (event) {
+      console.log('sda')
       event.preventDefault()
-      axios.get('http://localhost:5000/api/search', {
+      axios.get(`${process.env.ROOT_API}/search`, {
         params: {
           type: this.type,
           searchKeyWord: this.searchKeyWord,
@@ -113,17 +127,23 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;1,300&display=swap');
 .products-container{
   background-color:white;
   display:grid;
   place-items: center;
-  margin-top:30px;
+  margin-top:40px;
+  font-family: 'Barlow', sans-serif;
 }
 .products-header{
     text-align:center;
 }
+h2{
+  color:black;
+}
 .products-body{
   display:flex;
+  flex-wrap: wrap;
   width: 90vw;
 }
 .products-search-bar-container{
@@ -133,31 +153,23 @@ export default {
     border:1px solid black;
     border-radius: 5px;
     background-color:#ededed;
-    padding: 20px;
-    box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.2);
-    height: 90vh;
+    padding: 30px;
+    height: 80vh;
+    margin-top:10px;
+    color:#0C509F;
 }
 .products-list{
     display: flex;
     flex-wrap: wrap;
     flex:0.75;
-    border:1px solid black;
-    background-color:#ededed;
-    padding: 20px;
+    padding-left: 20px;
     height: 100%;
-    box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.2);
+    margin-left:10px;
 }
 .products-item{
     display: flex;
     flex:0.25;
     margin:auto;
-}
-ul.departmenst-list-container{
-    list-style-type: none;
-    font-size: 1.2rem;
-    padding:0;
-    line-height:1.6rem;
-    color:cornflowerblue;
 }
 .departmenst-list-container li:hover{
     cursor: pointer;
@@ -167,7 +179,7 @@ ul.departmenst-list-container{
     display: flex;
     flex-direction: column;
     width:70%;
-    margin: 10px auto;
+    margin: 15px auto;
 }
 input[type=text], select {
   width: 100%;
@@ -175,8 +187,10 @@ input[type=text], select {
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
   box-sizing: border-box;
+  font-family: 'Barlow', sans-serif;
+  font-size: 1.1rem;
 }
 label{
     font-size:1.2rem;
@@ -187,5 +201,28 @@ label{
     background-color:mediumseagreen;
     color:white;
     font-size: 1.2rem;
+}
+hr.style-six {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+@media only screen and (max-width:425px) {
+  .products-search-bar-container{
+    flex:1;
+  }
+  .products-list{
+    flex: 1;
+    margin: 5px auto;
+    padding-left:0px;
+  }
+  .form-group{
+      width:90%;
+  }
+  .products-item{
+    width:90%;
+    flex: 1;
+  }
 }
 </style>
