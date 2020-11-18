@@ -26,4 +26,18 @@ export default {
     padding:10px;
     background-color:#f8d7da;
 }
+@media only screen and (max-width:425px) {
+  .product-notfound-container{
+    position: relative;
+    top: 10px;
+    flex:1;
+    width: 90vw;
+}
+}
+@media only screen and (min-width: 768px) and (max-width:1024px) {
+    
+}
+@media only screen and (min-width: 1024px) and (max-width:1440px) {
+    
+}
 </style>
