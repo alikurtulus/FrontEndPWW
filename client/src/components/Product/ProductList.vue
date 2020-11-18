@@ -29,7 +29,7 @@
                       <label  for="type">Type</label>
                       <select @change="handleSearch" v-model="type" id="type" name="type" class="form-control" >
                           <option value="" >All </option>
-                          <option v-for="currentType in types" :key="currentType" v:bind:value={}>{{currentType}} </option>
+                          <option v-for="currentType in types" :key="currentType" >{{currentType}} </option>
                       </select>
                   </div>
               </form>
@@ -86,17 +86,16 @@ export default {
     }
   },
   created () {
+    // when user enter an input to search bar. We are passing this data with EventBus.
     EventBus.$on('searched-word', searchKeyWord => {
       this.searchKeyWord = searchKeyWord
       this.handleSearch(event)
     })
   },
   methods: {
+    // navigate  home page to product details with productId.
     navigateTo (route) {
       this.$router.push(route)
-    },
-    handleTypeChange (event) {
-      this.type = event.target.value
     },
     handleSearch (event) {
       event.preventDefault()
@@ -117,6 +116,7 @@ export default {
     }
   },
   async mounted () {
+    // when an user enter an input from product details page and click search button with this input. We pass this input to the home page and call /search request with this query.
     if (this.$route.params.searchKeyWord !== undefined) {
       await axios.get(`${process.env.ROOT_API}/search`, {
         params: {
@@ -135,13 +135,13 @@ export default {
     } else {
       await axios.get(`${process.env.ROOT_API}/products`)
         .then(res => {
-          console.log(res)
           this.products = res.data.products
         })
         .catch(error => {
           console.error(error)
         })
     }
+    // get all departments data with /departments request
     await axios.get(`${process.env.ROOT_API}/departments`)
       .then(res => {
         this.departments = res.data
@@ -149,6 +149,7 @@ export default {
       .catch(error => {
         console.error(error)
       })
+    // get all types data with /types request
     await axios.get(`${process.env.ROOT_API}/types`)
       .then(res => {
         this.types = res.data
