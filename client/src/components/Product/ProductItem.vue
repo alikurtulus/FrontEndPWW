@@ -13,7 +13,6 @@
 export default {
   name: 'ProductItem',
   props: {
-    id: String,
     product: Object
   }
 }
@@ -61,21 +60,30 @@ export default {
     color:#0C509F;
 }
 @media only screen and (max-width:320px) {
-    .product-item-container{
-        width:18rem;
+    div .product-item-container{
+        width:18rem !important;
         margin:5px auto;
+        height: 45vh;
+    }
+     .product-img-container img{
+        height: 26vh !important;
     }
 }
-@media only screen and ( max-width:375px) {
+@media only screen and (min-width: 320px) and (max-width:375px) {
     .product-item-container{
-        width:21rem;
+        width:21rem !important;
         margin:5px auto;
+        height: 45vh;
     }
 }
 @media only screen and (max-width:425px) {
     .product-item-container{
-        width:18rem;
+        width:24rem;
         margin:5px auto;
+        height: 50vh;
+    }
+    .product-img-container img{
+        height: 33vh;
     }
 }
 </style>

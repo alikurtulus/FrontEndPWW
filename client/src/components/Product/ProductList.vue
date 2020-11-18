@@ -35,24 +35,23 @@
               </form>
           </div>
           <div class="products-list">
-              <teplate v-if="products === null">
+              <template v-if="products === null">
                 <Spinner />
-              </teplate>
+              </template>
               <template v-else-if="products.length > 0" >
                   <div
                       v-for="product in products"
+                      class="product-item"
+                      :key="product.id"
                       @click="navigateTo({
                       name:'product',
                       params:{
                           id:product.id
                       }})"
-                      class="product-item"
-                      :key="product.id"
                   >
-                      <ProductItem
-                      v-bind:id="product.id"
+                    <ProductItem
                       v-bind:product="product"
-                      />
+                    />
                   </div>
               </template>
               <template v-else>
@@ -83,7 +82,8 @@ export default {
       searchKeyWord: '',
       department: '',
       type: '',
-      price: ''
+      price: '',
+      id: ''
     }
   },
   created () {
@@ -100,7 +100,6 @@ export default {
       this.type = event.target.value
     },
     handleSearch (event) {
-      console.log('sda')
       event.preventDefault()
       axios.get(`${process.env.ROOT_API}/search`, {
         params: {
@@ -111,7 +110,7 @@ export default {
         }
       })
         .then(response => {
-          this.products = response.data
+          this.products = response.data.products
         })
         .catch(error => {
           console.error(error)
@@ -119,9 +118,29 @@ export default {
     }
   },
   async mounted () {
-    this.products = (await ProductsServices.index()).data.products
-    this.departments = (await ProductsServices.getDepartments()).data
-    this.types = (await ProductsServices.getAllTypes()).data
+    console.log(this.$route.params.searchKeyWord)
+    if (this.$route.params.searchKeyWord !== undefined) {
+      await axios.get(`${process.env.ROOT_API}/search`, {
+        params: {
+          type: this.type,
+          searchKeyWord: this.$route.params.searchKeyWord,
+          department: this.department,
+          price: this.price
+        }
+      })
+        .then(response => {
+          this.products = response.data.products
+        })
+        .catch(error => {
+          console.error(error)
+        })
+      this.departments = (await ProductsServices.getDepartments()).data
+      this.types = (await ProductsServices.getAllTypes()).data
+    } else {
+      this.products = (await ProductsServices.index()).data.products
+      this.departments = (await ProductsServices.getDepartments()).data
+      this.types = (await ProductsServices.getAllTypes()).data
+    }
   }
 }
 </script>
@@ -154,7 +173,7 @@ h2{
     border-radius: 5px;
     background-color:#ededed;
     padding: 30px;
-    height: 80vh;
+    height: 55vh;
     margin-top:10px;
     color:#0C509F;
 }
@@ -211,6 +230,9 @@ hr.style-six {
 @media only screen and (max-width:425px) {
   .products-search-bar-container{
     flex:1;
+    padding: 20px;
+    height: 56vh;
+    margin-top:0px;
   }
   .products-list{
     flex: 1;
@@ -219,10 +241,14 @@ hr.style-six {
   }
   .form-group{
       width:90%;
+      margin: 1px auto;
   }
   .products-item{
-    width:90%;
+    width:100%;
     flex: 1;
+  }
+  h2{
+    font-size:1.2rem;
   }
 }
 </style>
