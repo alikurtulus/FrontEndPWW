@@ -6,8 +6,8 @@
           <li><a href='/'><span >Store</span></a></li>
         </ul>
       </nav>
-      <form   id='search-form' >
-        <input v-model.trim="searchKeyWord" placeholder='Search product name...' size='15' type='text'/>
+      <form  id='search-form' >
+        <input v-model.trim="searchKeyWord" class="product-user-input" placeholder='Search product name...' size='15' type='text'/>
         <input @click="search" id='button-submit' type='submit' value='Search'/>
       </form>
   </div>
@@ -24,7 +24,8 @@ export default {
     }
   },
   methods: {
-    search (newSearchKeyWord) {
+    search (event) {
+      event.preventDefault()
       EventBus.$emit('searched-word', this.searchKeyWord)
       console.log(this.$route.name)
       if (this.$route.name !== 'ProductList') {

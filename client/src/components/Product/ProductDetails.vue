@@ -20,7 +20,7 @@
             </div>
             <h3>Product Details</h3>
             <p class="product-description">{{product.description}}</p>
-            <button class="btn-add">Add To Cart</button>
+            <button class="btn-add">Add To Card</button>
         </div>
     </template>
 </div>
@@ -153,21 +153,21 @@ h5{
     border-radius: 3px;
 }
 @media only screen and (max-width:425px) {
-    .product-details-container{
+    .product-details-container {
         display: flex;
         flex-direction: column;
         width: 80%;
         margin: 10px auto;
         height: auto;
     }
-    .product-left-container  {
+    .product-left-container {
         width: 100%;
         flex:1;
         position: relative;
         left:0;
         top:15px;
     }
-    .product-details-body{
+    .product-details-body {
         display: flex;
         flex-direction: column;
         flex:1;
@@ -186,7 +186,7 @@ h5{
         color:black;
         font-weight:800;
         text-align: left;
-    }   
+    }
     .rating {
         unicode-bidi: bidi-override;
         direction: rtl;
@@ -194,7 +194,7 @@ h5{
         color:orange;
         text-align: left;
     }
-    .product-price{
+    .product-price {
         padding:0px;
         font-size: 1.4rem;
         font-weight: 800;
@@ -204,10 +204,67 @@ h5{
         border:1px solid black;
         height: 40vh;
     }
-    .btn-add{
+    .btn-add {
         height: 42px;
         padding:4px;
         font-size: 1.3rem;
+    }
+}
+@media only screen and (min-width: 768px) and (max-width:1024px) {
+    .product-details-container {
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+        margin: 20px auto;
+        height: auto;
+        padding:10px;
+    }
+    .product-left-container {
+        width: 100%;
+        flex:0.50;
+        position: relative;
+        left:0;
+        top:15px;
+    }
+    .product-details-body {
+        display: flex;
+        flex-direction: column;
+        flex:0.50;
+        position: relative;
+        right: 20px;
+        top:0px;
+    }
+    .product-title {
+        padding: 0px;
+        font-size: 1.7rem;
+        color:black;
+        font-weight:800;
+        text-align: left;
+    }
+}
+@media only screen and (min-width: 1024px) and (max-width:1440px) {
+    .product-details-container {
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+        margin: 40px auto;
+        height: auto;
+        padding:10px;
+    }
+    .product-left-container {
+        width: 100%;
+        flex:0.50!important;
+        position: relative;
+        left:0;
+        top:15px;
+    }
+    .product-details-body {
+        display: flex;
+        flex-direction: column;
+        flex:0.50 !important;
+        position: relative;
+        right: 20px;
+        top:0px;
     }
 }
 </style>

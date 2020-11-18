@@ -64,7 +64,6 @@
 </template>
 <script>
 import ProductItem from './ProductItem'
-import ProductsServices from '../../../services/ProductsServices'
 import axios from 'axios'
 import NoProduct from './NoProduct'
 import Spinner from '../UI/Spinner'
@@ -118,7 +117,6 @@ export default {
     }
   },
   async mounted () {
-    console.log(this.$route.params.searchKeyWord)
     if (this.$route.params.searchKeyWord !== undefined) {
       await axios.get(`${process.env.ROOT_API}/search`, {
         params: {
@@ -134,17 +132,33 @@ export default {
         .catch(error => {
           console.error(error)
         })
-      this.departments = (await ProductsServices.getDepartments()).data
-      this.types = (await ProductsServices.getAllTypes()).data
     } else {
-      this.products = (await ProductsServices.index()).data.products
-      this.departments = (await ProductsServices.getDepartments()).data
-      this.types = (await ProductsServices.getAllTypes()).data
+      await axios.get(`${process.env.ROOT_API}/products`)
+        .then(res => {
+          console.log(res)
+          this.products = res.data.products
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
+    await axios.get(`${process.env.ROOT_API}/departments`)
+      .then(res => {
+        this.departments = res.data
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    await axios.get(`${process.env.ROOT_API}/types`)
+      .then(res => {
+        this.types = res.data
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }
 }
 </script>
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;1,300&display=swap');
 .products-container{
@@ -227,11 +241,12 @@ hr.style-six {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 @media only screen and (max-width:425px) {
   .products-search-bar-container{
     flex:1;
     padding: 20px;
-    height: 56vh;
+    height: auto;
     margin-top:0px;
   }
   .products-list{

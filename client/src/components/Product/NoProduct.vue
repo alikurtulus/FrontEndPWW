@@ -1,6 +1,6 @@
 <template>
 <div class="product-notfound-container">
-    <p class="product-notfound-content">Product not found</p>
+    <p class="product-notfound-content">No results found</p>
 </div>
 </template>
 <script>
@@ -16,7 +16,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .product-notfound-container{
+    position: relative;
+    top:10px;
     width:95%;
+    background-color: #ededed;
+    padding:10px;
 }
 .product-notfound-content{
     border:1px solid #f8d7da;
@@ -33,11 +37,5 @@ export default {
     flex:1;
     width: 90vw;
 }
-}
-@media only screen and (min-width: 768px) and (max-width:1024px) {
-    
-}
-@media only screen and (min-width: 1024px) and (max-width:1440px) {
-    
 }
 </style>

@@ -76,7 +76,17 @@ export default {
         height: 45vh;
     }
 }
-@media only screen and (max-width:425px) {
+@media only screen and (min-width: 375px) and (max-width:425px) {
+    .product-item-container{
+        width:21rem ;
+        margin:5px auto;
+        height: 50vh;
+    }
+    .product-img-container img{
+        height: 33vh;
+    }
+}
+@media only screen and (min-width:425px) and (max-width:768px){
     .product-item-container{
         width:24rem;
         margin:5px auto;
@@ -88,9 +98,9 @@ export default {
 }
 @media only screen and (min-width: 768px) and (max-width:1024px) {
     .product-item-container{
-        width:18rem !important;
+        width:20rem !important;
         margin:5px 2px;
-        height: 45vh;
+        height: 48vh;
     }
 }
 @media only screen and (min-width: 1024px) and (max-width:1440px) {

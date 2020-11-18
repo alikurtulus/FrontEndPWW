@@ -10,5 +10,4 @@ export default {
   getAllTypes () {
     return Api().get('types')
   }
-
 }

@@ -2,6 +2,7 @@
 <div class="spin">
     <div class="ring">
         <div class="lds-hourglass"></div>
+        <div class="loading-text">Loading...</div>
     </div>
 </div>
 </template>
@@ -47,6 +48,9 @@ export default {
   border: 32px solid #fff;
   border-color: #fff transparent #fff transparent;
   animation: lds-hourglass 1.2s infinite;
+}
+.loading-text {
+  text-align: center;
 }
 @keyframes lds-hourglass {
   0% {
