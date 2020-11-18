@@ -86,4 +86,18 @@ export default {
         height: 33vh;
     }
 }
+@media only screen and (min-width: 768px) and (max-width:1024px) {
+    .product-item-container{
+        width:18rem !important;
+        margin:5px 2px;
+        height: 45vh;
+    }
+}
+@media only screen and (min-width: 1024px) and (max-width:1440px) {
+    .product-item-container{
+        width:18rem !important;
+        margin:5px 2px;
+        height: 45vh;
+    }
+}
 </style>

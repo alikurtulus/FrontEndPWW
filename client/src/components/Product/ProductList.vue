@@ -251,4 +251,32 @@ hr.style-six {
     font-size:1.2rem;
   }
 }
+@media only screen and (min-width: 768px) and (max-width:1024px) {
+    .products-search-bar-container{
+      padding: 20px;
+      height: 56vh;
+      margin-top:0px;
+    }
+    .form-group{
+        width:90%;
+        margin: 1px auto;
+    }
+    h2{
+      font-size:1.3rem;
+    }
+}
+@media only screen and (min-width: 1024px) and (max-width:1440px) {
+    .products-search-bar-container{
+      padding: 20px;
+      height: 56vh;
+      margin-top:0px;
+    }
+    .form-group{
+        width:90%;
+        margin: 1px auto;
+    }
+    h2{
+      font-size:1.4rem;
+    }
+}
 </style>
